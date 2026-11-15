@@ -1,10 +1,5 @@
 @php
     $brand = match (true) {
-        request()->routeIs('home', 'root') => [
-            'logo' => 'tepuktangan_orange.png',
-            'class' => '',
-            'alt' => 'Tepuk Tangan',
-        ],
         request()->routeIs('photobooth', 'photobooth.detail') => [
             'logo' => 'logo_photobooth.png',
             'class' => 'nav__brand-logo--compact',

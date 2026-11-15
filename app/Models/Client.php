@@ -6,6 +6,7 @@ use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Client extends Model
 {
@@ -15,13 +16,32 @@ class Client extends Model
     protected $fillable = [
         'client_name',
         'cover_image',
+        'cover_drive_file_id',
         'month_date',
         'client_type',
+        'drive_folder_id',
+        'drive_folder_url',
+        'drive_link_type',
+        'drive_synced_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'drive_synced_at' => 'datetime',
+        ];
+    }
 
     public function assets(): HasMany
     {
         return $this->hasMany(ClientAsset::class);
+    }
+
+    public function driveSources(): HasMany
+    {
+        return $this->hasMany(ClientDriveSource::class)
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     public function videos(): HasMany
@@ -42,10 +62,24 @@ class Client extends Model
 
     public function getCoverUrlAttribute(): ?string
     {
+        if ($this->cover_drive_file_id) {
+            $path = 'drive/'.$this->cover_drive_file_id.'-w800.jpg';
+
+            if (Storage::disk('public')->exists($path)) {
+                return asset('storage/'.$path);
+            }
+
+            return 'https://lh3.googleusercontent.com/d/'.$this->cover_drive_file_id.'=w800';
+        }
+
         if (! $this->cover_image) {
             return null;
         }
 
-        return asset('storage/'.$this->cover_image);
+        if (Storage::disk('public')->exists($this->cover_image)) {
+            return asset('storage/'.$this->cover_image);
+        }
+
+        return null;
     }
 }

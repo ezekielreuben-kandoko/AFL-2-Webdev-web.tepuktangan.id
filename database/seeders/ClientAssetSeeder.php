@@ -11,7 +11,6 @@ class ClientAssetSeeder extends Seeder
 {
     private const ASSET_SOURCES = [
         'Vera & Nuel' => ['gallery/Vera & Nuel'],
-        'Stephen & Poppy' => ['gallery/Stephen&Poppy'],
         'Erica & Alvin' => ['gallery/Erica&Alvin'],
         'Arul Silvia' => ['Photoboot/arul silvia'],
         'Calvin Meili' => ['Photoboot/calvin meili'],

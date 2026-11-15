@@ -28,13 +28,19 @@
                         <img
                             src="{{ $client->cover_url ?: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85' }}"
                             alt="{{ $client->client_name }} — Tepuk Tangan visual archive"
-                            loading="lazy"
+                            referrerpolicy="no-referrer"
+                            loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                            decoding="async"
+                            @if ($loop->first) fetchpriority="high" @endif
                         >
                         <span class="gallery-card__shade" aria-hidden="true"></span>
                     </span>
 
                     <span class="gallery-card__meta">
-                        <span class="gallery-card__title">{{ $client->client_name }} <span class="gallery-card__arrow" aria-hidden="true">→</span></span>
+                        <span class="gallery-card__title">
+                            <span class="gallery-card__name">{{ $client->client_name }}</span>
+                            <span class="gallery-card__arrow" aria-hidden="true">→</span>
+                        </span>
                     </span>
                     <span class="gallery-card__rule" aria-hidden="true"></span>
                 </a>

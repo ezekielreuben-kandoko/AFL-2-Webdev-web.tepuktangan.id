@@ -20,7 +20,10 @@
         type="font/ttf"
         crossorigin
     />
-    <link rel="stylesheet" href="{{ asset('mydesign/style.css') }}" />
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+    <link rel="preconnect" href="https://drive.google.com" />
+    <link rel="stylesheet" href="{{ asset('mydesign/style.css') }}?v={{ filemtime(public_path('mydesign/style.css')) }}" />
+    @stack('head')
 </head>
 <body>
     @include('components.navbar')
@@ -30,6 +33,6 @@
     </main>
 
     @include('layouts.footer')
-    <script src="{{ asset('mydesign/app.js') }}" defer></script>
+    <script src="{{ asset('mydesign/app.js') }}?v={{ filemtime(public_path('mydesign/app.js')) }}" defer></script>
 </body>
 </html>

@@ -11,12 +11,6 @@ class ClientSeeder extends Seeder
     {
         return [
             [
-                'client_name' => 'Stephen & Poppy',
-                'cover_image' => 'gallery/Stephen&Poppy/_NRO0465.jpg',
-                'month_date' => '13/10/25',
-                'client_type' => 'gallery',
-            ],
-            [
                 'client_name' => 'Erica & Alvin',
                 'cover_image' => 'gallery/Erica&Alvin/DIA00699.JPG',
                 'month_date' => '06/06/22',

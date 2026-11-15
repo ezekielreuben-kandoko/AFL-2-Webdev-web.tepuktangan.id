@@ -31,6 +31,7 @@ document.querySelectorAll('.home-hero').forEach((hero) => {
     let startX = null;
     let autoAdvance;
     let loopResetTimeout;
+    let isHeroVisible = true;
 
     if (!track || slides.length === 0) {
         return;
@@ -86,7 +87,7 @@ document.querySelectorAll('.home-hero').forEach((hero) => {
     const restartAutoAdvance = () => {
         window.clearInterval(autoAdvance);
 
-        if (!reducedMotion) {
+        if (!reducedMotion && isHeroVisible) {
             autoAdvance = window.setInterval(() => {
                 if (!document.hidden) {
                     showSlide(activeSlide + 1);
@@ -94,6 +95,17 @@ document.querySelectorAll('.home-hero').forEach((hero) => {
             }, 5000);
         }
     };
+
+    if ('IntersectionObserver' in window) {
+        const visibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                isHeroVisible = entry.isIntersecting;
+                restartAutoAdvance();
+            });
+        }, { threshold: 0.05 });
+
+        visibilityObserver.observe(hero);
+    }
 
     hero.addEventListener('pointerdown', (event) => {
         if (event.target.closest('button, a')) {
@@ -123,36 +135,6 @@ document.querySelectorAll('.home-hero').forEach((hero) => {
 
     restartAutoAdvance();
 });
-
-const parallaxFrames = [...document.querySelectorAll('[data-parallax]')];
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (parallaxFrames.length && !prefersReducedMotion) {
-    let parallaxFrameRequested = false;
-
-    const updateParallax = () => {
-        parallaxFrames.forEach((frame) => {
-            const bounds = frame.getBoundingClientRect();
-            const speed = Number(frame.dataset.parallax);
-            const offset = Math.max(-28, Math.min(28, (window.innerHeight / 2 - bounds.top - bounds.height / 2) * speed));
-
-            frame.style.transform = `translate3d(0, ${offset}px, 0)`;
-        });
-
-        parallaxFrameRequested = false;
-    };
-
-    const requestParallaxUpdate = () => {
-        if (!parallaxFrameRequested) {
-            window.requestAnimationFrame(updateParallax);
-            parallaxFrameRequested = true;
-        }
-    };
-
-    window.addEventListener('scroll', requestParallaxUpdate, { passive: true });
-    window.addEventListener('resize', requestParallaxUpdate);
-    requestParallaxUpdate();
-}
 
 document.querySelectorAll('.inquiry-form').forEach((form) => {
     const number = form.dataset.whatsappNumber;
@@ -218,7 +200,7 @@ document.querySelectorAll('.inquiry-form').forEach((form) => {
                 headers: { Accept: 'application/json' },
             });
         } catch (error) {
-            // Tetap lanjut ke WhatsApp bila penyimpanan gagal.
+
         }
 
         const opened = window.open(url, '_blank');

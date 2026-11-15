@@ -9,7 +9,13 @@ class HomeController extends Controller
     public function index(): View
     {
         return view('home', [
-            'heroSlides' => ['DIA00001.jpg', 'DIA00003.jpg', 'DIA00007.jpg', 'DIA00021.jpg', 'DIA00039.jpg'],
+            'heroSlides' => [
+                ['file' => 'DIA00001.jpg', 'sizes' => '100vw'],
+                ['file' => 'DIA00003.jpg', 'sizes' => '100vw'],
+                ['file' => 'DIA00007.jpg', 'sizes' => '(max-width: 800px) 100vw, 60vw'],
+                ['file' => 'DIA00021.jpg', 'sizes' => '(max-width: 800px) 100vw, 60vw'],
+                ['file' => 'DIA00039.jpg', 'sizes' => '(max-width: 800px) 100vw, 60vw'],
+            ],
             'galleryPhotos' => ['DIA00313.jpg', 'DIA00368.jpg', 'DIA00384.jpg', 'DIA00396.jpg', 'DIA00462.jpg', 'DIA00465.jpg', 'DIA00478.jpg', 'DIA00486.jpg'],
             'collageFrames' => [
                 ['class' => 'one', 'parallax' => '0.12', 'file' => 'DIA08913.jpg'],

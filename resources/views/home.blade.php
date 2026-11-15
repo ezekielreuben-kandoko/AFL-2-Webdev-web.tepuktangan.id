@@ -2,13 +2,36 @@
 
 @section('title', 'Tepuk Tangan | Home')
 
+@push('head')
+    <link
+        rel="preload"
+        as="image"
+        href="{{ asset('assets/Home/opt/DIA00001-1200.webp') }}"
+        imagesrcset="{{ asset('assets/Home/opt/DIA00001-480.webp') }} 480w, {{ asset('assets/Home/opt/DIA00001-800.webp') }} 800w, {{ asset('assets/Home/opt/DIA00001-1200.webp') }} 1200w, {{ asset('assets/Home/opt/DIA00001-1600.webp') }} 1600w"
+        imagesizes="100vw"
+        fetchpriority="high"
+    />
+    <style>
+        .home-hero { position: relative; height: 100svh; min-height: 600px; overflow: hidden; background: #18211f; }
+        .home-hero-track { display: flex; width: 100%; height: 100%; }
+        .home-hero-slide { position: relative; flex: 0 0 100%; height: 100%; overflow: hidden; }
+        .home-hero-slide img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+    </style>
+@endpush
+
 @section('content')
     <div class="home-page">
         <section class="home-hero" aria-label="Featured wedding stories">
             <div class="home-hero-track" aria-live="off">
-                @foreach ($heroSlides as $index => $file)
+                @foreach ($heroSlides as $index => $slide)
                     <article class="home-hero-slide">
-                        <img src="{{ asset('assets/Home/'.$file) }}" alt="Wedding photography by Tepuk Tangan" width="1600" height="900" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" fetchpriority="{{ $index === 0 ? 'high' : 'low' }}" decoding="async">
+                        <x-home-image
+                            :file="$slide['file']"
+                            alt="Wedding photography by Tepuk Tangan"
+                            :sizes="$slide['sizes']"
+                            loading="eager"
+                            :fetchpriority="$index === 0 ? 'high' : 'auto'"
+                        />
                     </article>
                 @endforeach
             </div>
@@ -28,8 +51,8 @@
                 </div>
             </div>
             <figure class="home-intro-figure">
-                <img class="home-intro-portrait" src="{{ asset('assets/Home/DIA00056.jpg') }}" alt="Wedding photography by Tepuk Tangan" width="600" height="900" loading="lazy" fetchpriority="low" decoding="async">
-                <img class="home-intro-detail" src="{{ asset('assets/Home/DIA00223.jpg') }}" alt="" aria-hidden="true" width="400" height="300" loading="lazy" fetchpriority="low" decoding="async">
+                <x-home-image file="DIA00056.jpg" alt="Wedding photography by Tepuk Tangan" class="home-intro-portrait" sizes="(max-width: 680px) 100vw, 440px" grayscale />
+                <x-home-image file="DIA00223.jpg" alt="" aria-hidden="true" class="home-intro-detail" sizes="(max-width: 680px) 33vw, 160px" grayscale />
             </figure>
         </section>
 
@@ -45,13 +68,13 @@
                 <div class="home-gallery-grid">
                     @foreach ($galleryPhotos as $index => $file)
                         <a class="home-gallery-card home-gallery-card--{{ $index + 1 }}" href="{{ route('gallery') }}">
-                            <img src="{{ asset('assets/Home/'.$file) }}" alt="Wedding photography by Tepuk Tangan" width="800" height="1000" loading="lazy" fetchpriority="low" decoding="async">
+                            <x-home-image :file="$file" alt="Wedding photography by Tepuk Tangan" sizes="(max-width: 680px) 50vw, (max-width: 1100px) 45vw, 620px" muted />
                             <span><i>Photography by Tepuk Tangan</i></span>
                         </a>
                     @endforeach
 
                     <a class="home-gallery-card home-gallery-card--film" href="{{ route('gallery') }}">
-                        <img src="{{ asset('assets/Home/DIA08889.jpg') }}" alt="Wedding film by Livi Visual" width="800" height="800" loading="lazy" fetchpriority="low" decoding="async">
+                        <x-home-image file="DIA08889.jpg" alt="Wedding film by Livi Visual" sizes="(max-width: 680px) 100vw, (max-width: 1100px) 66vw, 900px" />
                         <span><i>Film by Livi Visual</i></span>
                         <span class="home-gallery-film-mark" aria-hidden="true">Play film ↗</span>
                     </a>
@@ -62,8 +85,8 @@
 
         <section class="home-collage" aria-labelledby="home-cta-title">
             @foreach ($collageFrames as $frame)
-                <div class="home-collage-frame home-collage-frame--{{ $frame['class'] }}" data-parallax="{{ $frame['parallax'] }}">
-                    <img src="{{ asset('assets/Home/'.$frame['file']) }}" alt="" aria-hidden="true" width="500" height="500" loading="lazy" fetchpriority="low" decoding="async">
+                <div class="home-collage-frame home-collage-frame--{{ $frame['class'] }}">
+                    <x-home-image :file="$frame['file']" alt="" aria-hidden="true" sizes="(max-width: 680px) 45vw, 220px" grayscale />
                 </div>
             @endforeach
             <div class="home-collage-copy">

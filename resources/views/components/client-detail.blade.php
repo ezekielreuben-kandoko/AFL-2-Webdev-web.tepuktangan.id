@@ -10,9 +10,23 @@
 
     <div class="client-detail__media">
         @foreach ($client->videos as $asset)
-            <video class="client-detail__video" controls playsinline preload="metadata" aria-label="{{ $client->client_name }} wedding video">
-                <source src="{{ $asset->url }}">
-            </video>
+            @if ($asset->drive_file_id)
+                <div class="client-detail__video" style="width:100%;aspect-ratio:16/9;">
+                    <iframe
+                        src="{{ $asset->embed_url }}"
+                        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                        style="width:100%;height:100%;border:0;border-radius:8px;display:block;"
+                        title="{{ $asset->alt ?: $client->client_name }}"
+                    ></iframe>
+                </div>
+            @else
+                <video class="client-detail__video" controls playsinline preload="none" aria-label="{{ $client->client_name }} wedding video">
+                    <source src="{{ $asset->url }}">
+                </video>
+            @endif
         @endforeach
 
         @if ($client->photos->isNotEmpty())
@@ -20,9 +34,12 @@
                 @foreach ($client->photos as $asset)
                     <img
                         class="client-detail__photo{{ $loop->first ? ' client-detail__photo--feature' : '' }}"
-                        src="{{ $asset->url }}"
+                        src="{{ $loop->first ? $asset->url : $asset->thumbnail_url }}"
                         alt="{{ $asset->alt ?: $client->client_name }}"
+                        referrerpolicy="no-referrer"
                         loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                        decoding="async"
+                        @if ($loop->first) fetchpriority="high" @endif
                     >
                 @endforeach
             </div>
