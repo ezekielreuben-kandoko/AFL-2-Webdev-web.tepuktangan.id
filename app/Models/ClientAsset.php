@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ImageVariant;
 use Database\Factories\ClientAssetFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +39,8 @@ class ClientAsset extends Model
                 : ($this->cachedDriveImage(1200) ?? 'https://lh3.googleusercontent.com/d/'.$this->drive_file_id.'=w1200');
         }
 
-        return asset('storage/'.$this->file_path);
+        return $this->localVariantUrl(ImageVariant::FEATURE_WIDTH)
+            ?? asset('storage/'.$this->file_path);
     }
 
     public function getEmbedUrlAttribute(): string
@@ -56,7 +58,8 @@ class ClientAsset extends Model
             return $this->cachedDriveImage(600) ?? 'https://lh3.googleusercontent.com/d/'.$this->drive_file_id.'=w600';
         }
 
-        return asset('storage/'.$this->file_path);
+        return $this->localVariantUrl(ImageVariant::THUMBNAIL_WIDTH)
+            ?? asset('storage/'.$this->file_path);
     }
 
     public function cachedDriveImage(int $width): ?string
@@ -66,6 +69,17 @@ class ClientAsset extends Model
         }
 
         $path = 'drive/'.$this->drive_file_id.'-w'.$width.'.jpg';
+
+        return Storage::disk('public')->exists($path) ? asset('storage/'.$path) : null;
+    }
+
+    private function localVariantUrl(int $width): ?string
+    {
+        if ($this->drive_file_id || ! $this->file_path) {
+            return null;
+        }
+
+        $path = ImageVariant::path($this->file_path, $width);
 
         return Storage::disk('public')->exists($path) ? asset('storage/'.$path) : null;
     }

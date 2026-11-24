@@ -32,14 +32,20 @@
         @if ($client->photos->isNotEmpty())
             <div class="client-detail__photos">
                 @foreach ($client->photos as $asset)
+                    @php
+                        $isFeature = $loop->first;
+                        $imageUrl = $isFeature ? $asset->url : $asset->thumbnail_url;
+                    @endphp
+
                     <img
-                        class="client-detail__photo{{ $loop->first ? ' client-detail__photo--feature' : '' }}"
-                        src="{{ $loop->first ? $asset->url : $asset->thumbnail_url }}"
+                        class="client-detail__photo{{ $isFeature ? ' client-detail__photo--feature' : ' js-lazy-image' }}"
+                        src="{{ $imageUrl }}"
+                        @if (! $isFeature) data-src="{{ $imageUrl }}" @endif
                         alt="{{ $asset->alt ?: $client->client_name }}"
                         referrerpolicy="no-referrer"
-                        loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                        loading="{{ $isFeature ? 'eager' : 'lazy' }}"
+                        fetchpriority="{{ $isFeature ? 'high' : 'low' }}"
                         decoding="async"
-                        @if ($loop->first) fetchpriority="high" @endif
                     >
                 @endforeach
             </div>

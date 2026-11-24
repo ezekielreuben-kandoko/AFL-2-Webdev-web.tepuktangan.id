@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ImageVariant;
 use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -74,6 +75,12 @@ class Client extends Model
 
         if (! $this->cover_image) {
             return null;
+        }
+
+        $variant = ImageVariant::path($this->cover_image, ImageVariant::COVER_WIDTH);
+
+        if (Storage::disk('public')->exists($variant)) {
+            return asset('storage/'.$variant);
         }
 
         if (Storage::disk('public')->exists($this->cover_image)) {

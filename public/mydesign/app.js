@@ -136,6 +136,66 @@ document.querySelectorAll('.home-hero').forEach((hero) => {
     restartAutoAdvance();
 });
 
+document.querySelectorAll('.client-detail__photos').forEach((gallery) => {
+    const images = [...gallery.querySelectorAll('.client-detail__photo[data-src]')];
+
+    if (images.length === 0 || !('IntersectionObserver' in window)) {
+        return;
+    }
+
+    const placeholder = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    const loadedClass = 'is-loaded';
+
+    gallery.classList.add('is-lazy');
+
+    const loadImage = (image) => {
+        if (image.dataset.lazyLoaded === 'true') {
+            return;
+        }
+
+        image.dataset.lazyLoaded = 'true';
+
+        const source = image.dataset.src;
+
+        if (!source) {
+            image.classList.add(loadedClass);
+
+            return;
+        }
+
+        const reveal = () => image.classList.add(loadedClass);
+
+        image.addEventListener('load', reveal, { once: true });
+        image.addEventListener('error', reveal, { once: true });
+        image.src = source;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                return;
+            }
+
+            loadImage(entry.target);
+            observer.unobserve(entry.target);
+        });
+    }, {
+        rootMargin: '400px 0px',
+        threshold: 0.01,
+    });
+
+    images.forEach((image) => {
+        if (image.complete && image.naturalWidth > 0) {
+            image.classList.add(loadedClass);
+
+            return;
+        }
+
+        image.src = placeholder;
+        observer.observe(image);
+    });
+});
+
 document.querySelectorAll('.inquiry-form').forEach((form) => {
     const number = form.dataset.whatsappNumber;
 
