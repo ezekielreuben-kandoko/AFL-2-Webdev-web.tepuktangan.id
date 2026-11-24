@@ -63,6 +63,14 @@
             <a href="{{ route('admin.clients.edit', $client) }}" class="nav__link"
                style="display:inline-block;margin-top:8px;padding:8px 16px;cursor:pointer;font-weight:600;background-color: orange;border:1px solid orange;">Edit
                 Klien</a>
+            <form method="POST" action="{{ route('admin.clients.destroy', $client) }}" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        onclick="return confirm('Hapus klien ini? Aset terkait juga akan terhapus.')"
+                        style="display:inline-block;margin-top:8px;padding:8px 16px;cursor:pointer;font-weight:600;background-color:red;color:#fff;border:1px solid red;">Delete
+                    Klien</button>
+            </form>
             <h2 style="font-family:'Bodoni Moda',Georgia,serif;font-size:24px;margin:48px 0 24px;color:#2b2a26;">Aset
                 Saat Ini</h2>
             <div class="gallery-card-grid-admin">
