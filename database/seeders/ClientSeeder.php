@@ -54,19 +54,19 @@ class ClientSeeder extends Seeder
             ],
             [
                 'client_name' => 'BTS Elementary School',
-                'cover_image' => null,
+                'cover_image' => 'Livesteaming/covers/bts-elementary-school.jpg',
                 'month_date' => '15/06/23',
                 'client_type' => 'livestream',
             ],
             [
                 'client_name' => 'BTS Livecam BG Gold Run',
-                'cover_image' => null,
+                'cover_image' => 'Livesteaming/covers/bts-livecam-bg-gold-run.jpg',
                 'month_date' => '20/06/23',
                 'client_type' => 'livestream',
             ],
             [
                 'client_name' => 'BTS SMP Cita Hati',
-                'cover_image' => null,
+                'cover_image' => 'Livesteaming/covers/bts-smp-cita-hati.jpg',
                 'month_date' => '12/01/23',
                 'client_type' => 'livestream',
             ],

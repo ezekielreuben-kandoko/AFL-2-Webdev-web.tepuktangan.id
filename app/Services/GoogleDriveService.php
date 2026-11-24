@@ -130,8 +130,13 @@ class GoogleDriveService
                 ->orderBy('sort_order')
                 ->first();
 
-            if ($firstPhoto) {
-                $client->cover_drive_file_id = $firstPhoto->drive_file_id;
+            $coverAsset = $firstPhoto ?: $client->assets()
+                ->whereNotNull('drive_file_id')
+                ->orderBy('sort_order')
+                ->first();
+
+            if ($coverAsset) {
+                $client->cover_drive_file_id = $coverAsset->drive_file_id;
             }
         }
 

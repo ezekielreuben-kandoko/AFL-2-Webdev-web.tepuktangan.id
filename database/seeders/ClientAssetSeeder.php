@@ -81,8 +81,8 @@ class ClientAssetSeeder extends Seeder
                 );
             })->values();
 
-            if ($client->cover_image && ! $photos->contains($client->cover_image)) {
-                throw new RuntimeException("Cover image not found among client photos: {$client->cover_image}");
+            if ($client->cover_image && ! $photos->contains($client->cover_image) && ! Storage::disk('public')->exists($client->cover_image)) {
+                throw new RuntimeException("Cover image not found: {$client->cover_image}");
             }
 
             $client->assets()->delete();
