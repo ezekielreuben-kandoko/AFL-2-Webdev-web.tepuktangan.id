@@ -67,6 +67,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit"
+                        class="nav__link"
                         onclick="return confirm('Hapus klien ini? Aset terkait juga akan terhapus.')"
                         style="display:inline-block;margin-top:8px;padding:8px 16px;cursor:pointer;font-weight:600;background-color:red;color:#fff;border:1px solid red;">Delete
                     Klien</button>
