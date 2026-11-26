@@ -2,22 +2,18 @@
     $brand = match (true) {
         request()->routeIs('photobooth', 'photobooth.detail') => [
             'logo' => 'logo_photobooth.png',
-            'class' => 'nav__brand-logo--compact',
             'alt' => 'Lifetime',
         ],
         request()->routeIs('livestreaming', 'livestreaming.detail') => [
             'logo' => 'logo_livestream.png',
-            'class' => 'nav__brand-logo--livestream',
             'alt' => 'Liveplus',
         ],
         request()->routeIs('lumenara', 'lumenara.detail') => [
             'logo' => 'lumenaara_white.png',
-            'class' => '',
             'alt' => 'Lumenara',
         ],
         default => [
             'logo' => 'tepuktangan_white.png',
-            'class' => '',
             'alt' => 'Tepuk Tangan',
         ],
     };
@@ -25,8 +21,8 @@
 
 <nav class="nav" aria-label="Navigasi utama">
     <a class="nav__brand" href="{{ route('home') }}">
-        <span @class(['nav__brand-logo', $brand['class']])>
-            <img src="{{ asset('assets/Logo/'.$brand['logo']) }}" alt="{{ $brand['alt'] }}" />
+        <span class="nav__brand-logo">
+            <img src="{{ asset('assets/Logo/nav/'.$brand['logo']) }}" alt="{{ $brand['alt'] }}" />
         </span>
     </a>
     <button

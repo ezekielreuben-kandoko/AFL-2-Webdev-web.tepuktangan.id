@@ -1,7 +1,7 @@
 <nav class="nav admin-nav" aria-label="Navigasi admin">
     <a href="{{ route('admin.clients.index') }}" class="nav__brand">
         <span class="nav__brand-logo">
-            <img src="{{ asset('assets/Logo/tepuktangan_white.png') }}" alt="Tepuk Tangan" />
+            <img src="{{ asset('assets/Logo/nav/tepuktangan_white.png') }}" alt="Tepuk Tangan" />
         </span>
     </a>
     <div class="nav__menu">
